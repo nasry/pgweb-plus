@@ -1,18 +1,60 @@
-# pgweb
+# pgweb-plus
 
-Simple web-based and cross platform PostgreSQL database explorer.
+Simple web-based and cross platform PostgreSQL database explorer, with extra
+productivity features.
 
-[![Release](https://img.shields.io/github/release/sosedoff/pgweb.svg?label=Release)](https://github.com/sosedoff/pgweb/releases)
-[![Linux Build](https://github.com/sosedoff/pgweb/actions/workflows/checks.yml/badge.svg)](https://github.com/sosedoff/pgweb/actions?query=branch%3Amain)
 [![Go Report Card](https://goreportcard.com/badge/github.com/sosedoff/pgweb)](https://goreportcard.com/report/github.com/sosedoff/pgweb)
-[![GoDoc](https://pkg.go.dev/badge/github.com/sosedoff/pgweb)](https://pkg.go.dev/github.com/sosedoff/pgweb)
-[![Docker Pulls](https://img.shields.io/docker/pulls/sosedoff/pgweb.svg)](https://hub.docker.com/r/sosedoff/pgweb/)
+[![License](https://img.shields.io/badge/License-MIT-blue.svg)](LICENSE)
+
+## About this fork
+
+pgweb-plus is a fork of [sosedoff/pgweb](https://github.com/sosedoff/pgweb).
+
+Upstream pgweb is deliberately minimal: it is an excellent *browser* for
+PostgreSQL, but anything that changes data means writing SQL by hand. The goal
+of pgweb-plus is to close that gap - to offer the everyday conveniences you
+would expect from a tool like Adminer, without giving up what makes pgweb
+pleasant to use.
+
+The guiding principles are unchanged from upstream:
+
+- **Still a single binary with zero runtime dependencies.** New features add no
+  third-party packages.
+- **Still lightweight.** No measurable impact on startup time or memory usage,
+  and no state-management or UI framework was introduced.
+- **Still fast on large tables.** Work is pushed down to PostgreSQL; result sets
+  are never loaded into memory to be processed in the application.
+- **Everything new is optional.** If you only use the original pgweb
+  functionality, nothing changes for you, and the additions can be switched off.
+
+### What this fork adds
+
+| Feature | Description |
+| --- | --- |
+| Inline cell editing | Double-click a cell to edit it in place. See [Row editing](#row-editing). |
+| Insert / edit / delete rows | Forms generated from table metadata, with composite primary key support. |
+| Multi-column filtering | Stack several conditions with `AND`. See [Multi-column filtering](#multi-column-filtering). |
+
+### Planned
+
+Ideas under consideration for future releases, in the same spirit:
+
+- CSV Import
+- SQL Dump Export
+- Saved Queries
+- Foreign Key Navigation
+- Excel-like Copy & Paste
+
+Suggestions are welcome - open an [issue](https://github.com/nasry/pgweb-plus/issues).
+
+Upstream changes are tracked and merged periodically, so pgweb-plus stays close
+to pgweb rather than diverging into a separate product.
 
 ## Overview
 
-Pgweb is a web-based database explorer for PostgreSQL, written in Go, and works
-on Mac, Linux and Windows machines. Distributed as a simple binary with zero dependencies.
-Very easy to use and packs just the right amount of features.
+pgweb-plus is a web-based database explorer for PostgreSQL, written in Go, and
+works on Mac, Linux and Windows machines. Distributed as a simple binary with
+zero dependencies. Very easy to use and packs just the right amount of features.
 
 [See application screenshots](SCREENS.md)
 
@@ -28,18 +70,33 @@ Very easy to use and packs just the right amount of features.
 - Table and query data export to CSV/JSON/XML.
 - Query history.
 - Server bookmarks.
-- Inline cell editing, row insert/edit/delete, and multi-column filtering (see [Row editing](#row-editing)).
+- **New in pgweb-plus:** inline cell editing, row insert/edit/delete (see [Row editing](#row-editing)), and [multi-column filtering](#multi-column-filtering).
 
-Visit [WIKI](https://github.com/sosedoff/pgweb/wiki) for more details.
+Visit the upstream [WIKI](https://github.com/sosedoff/pgweb/wiki) for more
+details on the features inherited from pgweb.
 
 ## Demo
 
-Visit https://pgweb-demo.fly.dev/ to see Pgweb in action.
+Visit https://pgweb-demo.fly.dev/ to see upstream pgweb in action. The demo runs
+original pgweb and does not include the pgweb-plus features.
 
 ## Installation
 
-- [Precompiled binaries](https://github.com/sosedoff/pgweb/releases) for supported operating systems are available.
-- [More installation options](https://github.com/sosedoff/pgweb/wiki/Installation)
+Build from source:
+
+```
+git clone https://github.com/nasry/pgweb-plus.git
+cd pgweb-plus
+make build
+```
+
+The resulting binary is named `pgweb`, so every command and environment
+variable below is identical to upstream.
+
+For the features inherited from pgweb, the upstream
+[installation options](https://github.com/sosedoff/pgweb/wiki/Installation) also
+apply - but note that upstream binaries and Docker images do not include the
+pgweb-plus additions.
 
 ## Usage
 
@@ -78,7 +135,7 @@ PGWEB_SESSIONS=1 pgweb
 
 ## Row editing
 
-Pgweb can modify table data directly from the browser, without writing SQL.
+Pgweb-plus can modify table data directly from the browser, without writing SQL.
 The feature is enabled by default and only applies to the table rows view.
 
 **Inline cell editing**
@@ -139,7 +196,7 @@ and large tables behave exactly as they do without filters.
 
 Before running tests, make sure you have PostgreSQL server running on `localhost:5432`
 interface. Also, you must have `postgres` user that could create new databases
-in your local environment. Pgweb server should not be running at the same time.
+in your local environment. The pgweb-plus server should not be running at the same time.
 
 Execute test suite:
 
@@ -147,7 +204,7 @@ Execute test suite:
 make test
 ```
 
-If you're using Docker locally, you might also run pgweb test suite against
+If you're using Docker locally, you might also run the test suite against
 all supported PostgreSQL version with a single command:
 
 ```
@@ -161,8 +218,17 @@ make test-all
 - Commit your changes
 - Execute test suite
 - Push your code and open a new pull request
-- Use [issues](https://github.com/sosedoff/pgweb/issues) for any questions
-- Check [wiki](https://github.com/sosedoff/pgweb/wiki) for extra documentation
+- Use [issues](https://github.com/nasry/pgweb-plus/issues) for any questions
+- Check the upstream [wiki](https://github.com/sosedoff/pgweb/wiki) for extra documentation
+
+Changes that are not specific to pgweb-plus are better contributed directly to
+[upstream pgweb](https://github.com/sosedoff/pgweb).
+
+## Credits
+
+pgweb-plus builds on [pgweb](https://github.com/sosedoff/pgweb) by
+[Dan Sosedoff](https://github.com/sosedoff) and its contributors. All credit for
+the original application goes to them.
 
 ## License
 
